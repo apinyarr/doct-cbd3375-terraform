@@ -52,7 +52,17 @@ def lambda_handler(event, context):
             result_prediction = 'true'
         else:
             result_prediction = 'false'
-        return "{ \n" + f'"result":"{result_prediction}"' + f'",\n\t"type":"{type_prediction}"\n' + " }"
+        # return "{ \n" + f'"result":"{result_prediction}"' + f'",\n\t"type":"{type_prediction}"\n' + " }"
+        return {
+            'body': { 
+                "result": str(result_prediction),
+                "type": str(type_prediction)
+            },
+            'headers': {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*'
+                },
+        }
     except Exception as e:
         print(e)
         print('error occurred')
