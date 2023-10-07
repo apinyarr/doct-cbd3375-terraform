@@ -4,3 +4,6 @@
 */*.tfstate.*.backup
 */*.tfvars
 */.terraform/
+*.tfstate
+*.terraform.*.hcl
+.terraform
