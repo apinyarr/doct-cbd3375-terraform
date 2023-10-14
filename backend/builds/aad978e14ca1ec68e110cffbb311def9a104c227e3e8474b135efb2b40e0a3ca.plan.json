@@ -1,1 +1,0 @@
-{"filename": "builds/aad978e14ca1ec68e110cffbb311def9a104c227e3e8474b135efb2b40e0a3ca.zip", "runtime": "python3.8", "artifacts_dir": "builds", "build_plan": [["zip", "aws/python/process.py", null]]}
