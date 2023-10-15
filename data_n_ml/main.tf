@@ -61,7 +61,8 @@ resource "aws_iam_policy" "data_ml_policy" {
         "s3:ListBucket",
         "s3:GetObject",
         "s3:CopyObject",
-        "s3:HeadObject"
+        "s3:HeadObject",
+        "s3:PutObject"
       ],
       "Effect": "Allow",
       "Resource": [
