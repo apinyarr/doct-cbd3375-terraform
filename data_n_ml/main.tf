@@ -29,7 +29,7 @@ module "data_ml_sg" {
       to_port     = 22
       protocol    = "tcp"
       description = "ssh"
-      cidr_blocks = "170.133.228.85/32"
+      cidr_blocks = "208.98.222.122/32"
     },
     # {
     #   from_port   = 3389
