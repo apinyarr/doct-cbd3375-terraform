@@ -1,10 +1,9 @@
 # .gitignore
-*/*.tfstate
-*/*.tfstate.backup
-*/*.tfstate.*.backup
-*/*.tfvars
-*/.terraform/
-*/builds/
+*.tfstate
+*.tfstate.backup
+*.tfstate.*.backup
+*.tfvars
+*builds
 *.tfstate
 *.terraform.*.hcl
-.terraform
+*.terraform
