@@ -53,6 +53,8 @@ resource "google_compute_instance" "github-runner" {
     provisioning_model  = "STANDARD"
   }
 
+  metadata_startup_script = file("${path.module}/scripts/setup-github-runner.sh")
+
   service_account {
     email  = "terraform@flash-ocean-398923.iam.gserviceaccount.com"
     scopes = ["https://www.googleapis.com/auth/cloud-platform"]
