@@ -20,11 +20,11 @@ module "k8s_fe_vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
   name = "k8s-fe-vpc"
-  cidr = "192.168.30.0/26"
+  cidr = "192.168.30.0/25"
 
   azs             = ["ca-central-1a", "ca-central-1b"]
-  private_subnets = ["192.168.30.0/28", "192.168.30.16/28"]
-  public_subnets  = ["192.168.30.32/28", "192.168.30.48/28"]
+  private_subnets = ["192.168.30.0/27", "192.168.30.32/27"]
+  public_subnets  = ["192.168.30.64/27", "192.168.30.96/27"]
 
   enable_nat_gateway = var.activate_nat_gateway
   single_nat_gateway = var.activate_nat_gateway
@@ -35,39 +35,13 @@ module "k8s_fe_vpc" {
   tags = {
     Terraform = "true"
     Environment = "dev"
+    "kubernetes.io/cluster/cbd3375-eks-cluster" = "shared"
   }
-}
 
-module "k8s_services_sg" {
-  source = "terraform-aws-modules/security-group/aws"
-
-  name        = "k8s-services-sg"
-  description = "Security group for K8s services"
-  vpc_id      = module.k8s_fe_vpc.vpc_id
-
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = 8080
-      to_port     = 8080
-      protocol    = "tcp"
-      description = "http"
-      cidr_blocks = "170.133.228.85/32"
-    },
-    {
-      from_port   = 22
-      to_port     = 22
-      protocol    = "tcp"
-      description = "ssh"
-      cidr_blocks = "170.133.228.85/32"
-    },
-  ]
-
-  egress_with_cidr_blocks = [
-    {
-        rule        = "all-all"
-        cidr_blocks = "0.0.0.0/0"
-    },
-  ]
+  public_subnet_tags = {
+    "kubernetes.io/cluster/cbd3375-eks-cluster" = "shared"
+    "kubernetes.io/role/elb" = 1
+  }
 }
 
 module "doct_cbd3375_eks" {
@@ -79,6 +53,19 @@ module "doct_cbd3375_eks" {
 
   cluster_endpoint_public_access  = true
 
+  cluster_addons = {
+    coredns = {
+      most_recent = true
+    }
+    kube-proxy = {
+      most_recent = true
+    }
+    vpc-cni = {
+      most_recent = true
+    }
+  }
+
+  enable_irsa = true
 
   vpc_id                   = module.k8s_fe_vpc.vpc_id
   subnet_ids               = [module.k8s_fe_vpc.private_subnets[0], module.k8s_fe_vpc.private_subnets[1]]
@@ -123,7 +110,7 @@ module "doct_cbd3375_eks" {
 
   # EKS Managed Node Group(s)
   eks_managed_node_group_defaults = {
-    instance_types = ["t2.micro"]
+    instance_types = ["t2.small"]
   }
 
   eks_managed_node_groups = {
@@ -133,7 +120,7 @@ module "doct_cbd3375_eks" {
       max_size     = 2
       desired_size = 1
 
-      instance_types = ["t2.micro"]
+      instance_types = ["t2.small"]
       capacity_type  = "SPOT"
     }
   }
