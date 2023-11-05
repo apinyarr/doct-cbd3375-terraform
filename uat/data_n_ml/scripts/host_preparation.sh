@@ -9,5 +9,5 @@ curl -o actions-runner-linux-x64-2.310.2.tar.gz -L https://github.com/actions/ru
 echo "fb28a1c3715e0a6c5051af0e6eeff9c255009e2eec6fb08bc2708277fbb49f93  actions-runner-linux-x64-2.310.2.tar.gz" | shasum -a 256 -c
 mv actions-runner-linux-x64-2.310.2.tar.gz /home/ubuntu/ && chown ubuntu:ubuntu /home/ubuntu/actions-runner-linux-x64-2.310.2.tar.gz
 tar xzf /home/ubuntu/actions-runner-linux-x64-2.310.2.tar.gz -C /home/ubuntu && chown -R ubuntu:ubuntu /home/ubuntu/
-sudo -H -u ubuntu bash -c "/home/ubuntu/config.sh --url https://github.com/apinyarr/doct-cbd3375-dataprocessing --token AESNUZRXYDQGAS3CVSK67YLFGP7Y6 --runnergroup Default --name linux --labels linux --work _work"
+sudo -H -u ubuntu bash -c "/home/ubuntu/config.sh --url https://github.com/apinyarr/doct-cbd3375-dataprocessing --token AESNUZXWFAORLUM5EDM7KELFI4QTY --runnergroup Default --name linux-uat-1 --labels linux-uat-1 --work _work"
 sudo  ./svc.sh install && sudo ./svc.sh start
