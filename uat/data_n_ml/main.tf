@@ -19,7 +19,7 @@ terraform {
 module "data_ml_sg" {
   source = "terraform-aws-modules/security-group/aws"
 
-  name        = "data-ml-sg"
+  name        = "data-ml-uat-sg"
   description = "Security group for Data and ML server"
   # vpc_id      = module.ops_vpc.vpc_id
 
@@ -29,7 +29,7 @@ module "data_ml_sg" {
       to_port     = 22
       protocol    = "tcp"
       description = "ssh"
-      cidr_blocks = "208.98.222.122/32"
+      cidr_blocks = "170.133.228.85/32"
     },
     # {
     #   from_port   = 3389
@@ -48,8 +48,8 @@ module "data_ml_sg" {
   ]
 }
 
-resource "aws_iam_policy" "data_ml_policy" {
-  name        = "data_ml_policy"
+resource "aws_iam_policy" "data_ml_uat_policy" {
+  name        = "data_ml_uat_policy"
   description = "data_ml_policy"
 
   policy = <<EOF
@@ -75,8 +75,8 @@ resource "aws_iam_policy" "data_ml_policy" {
 EOF
 }
 
-resource "aws_iam_role" "data_ml_role" {
-  name = "data-ml-role"
+resource "aws_iam_role" "data_ml_uat_role" {
+  name = "data-ml-uat-role"
 
   assume_role_policy = <<EOF
 {
@@ -97,26 +97,26 @@ resource "aws_iam_role" "data_ml_role" {
 EOF
 }
 
-resource "aws_iam_role_policy_attachment" "terraform_ec2_iam_policy" {
-  role = "${aws_iam_role.data_ml_role.id}"
-  policy_arn = "${aws_iam_policy.data_ml_policy.arn}"
+resource "aws_iam_role_policy_attachment" "terraform_ec2_iam_uat_policy" {
+  role = "${aws_iam_role.data_ml_uat_role.id}"
+  policy_arn = "${aws_iam_policy.data_ml_uat_policy.arn}"
 }
 
-resource "aws_iam_instance_profile" "data_ml_ec2_profile" {
-  name = "data_ml_ec2_profile"
-  role = aws_iam_role.data_ml_role.name
+resource "aws_iam_instance_profile" "data_ml_ec2_uat_profile" {
+  name = "data_ml_ec2_uat_profile"
+  role = aws_iam_role.data_ml_uat_role.name
 }
 
-module "ec2_data_ml" {
+module "ec2_data_uat_ml" {
   create = var.create_data_ml_server
 
   source  = "terraform-aws-modules/ec2-instance/aws"
   version = "~> 4.4"
 
-  name = "ec2_data_ml"
+  name = "ec2_data_uat_ml"
 
   ami                    = "ami-0ea18256de20ecdfc"
-  iam_instance_profile   = aws_iam_instance_profile.data_ml_ec2_profile.name
+  iam_instance_profile   = aws_iam_instance_profile.data_ml_ec2_uat_profile.name
   instance_type          = "t2.micro"
   key_name               = "andy-key"
   monitoring             = true
