@@ -52,6 +52,13 @@ module "data_ml_sg" {
       description = "eks to ec2"
       cidr_blocks = "192.168.30.0/25"
     },
+    {
+      from_port   = 9090
+      to_port     = 9090
+      protocol    = "tcp"
+      description = "prometheus port"
+      cidr_blocks = "170.133.228.85/32"
+    },
   ]
 
   egress_with_cidr_blocks = [
