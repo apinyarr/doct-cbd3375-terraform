@@ -31,13 +31,27 @@ module "data_ml_sg" {
       description = "ssh"
       cidr_blocks = "170.133.228.85/32"
     },
-    # {
-    #   from_port   = 3389
-    #   to_port     = 3389
-    #   protocol    = "tcp"
-    #   description = "rdp"
-    #   cidr_blocks = "170.133.228.85/32"
-    # },
+    {
+      from_port   = 80
+      to_port     = 80
+      protocol    = "tcp"
+      description = "graphite port"
+      cidr_blocks = "170.133.228.85/32"
+    },
+    {
+      from_port   = 3000
+      to_port     = 3000
+      protocol    = "tcp"
+      description = "grafana port"
+      cidr_blocks = "170.133.228.85/32"
+    },
+    {
+      from_port   = 8125
+      to_port     = 8125
+      protocol    = "tcp"
+      description = "eks to ec2"
+      cidr_blocks = "192.168.30.0/25"
+    },
   ]
 
   egress_with_cidr_blocks = [
