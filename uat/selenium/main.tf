@@ -168,7 +168,7 @@ module "lambda_webdriver_role" {
 
 # Create log group in Cloudwatch for api gateway below
 resource "aws_cloudwatch_log_group" "apigw_log_group" {
-  name = "/aws/apigw/accesslog"
+  name = "/aws/apigw/seleniumaccesslog"
 }
 
 # Create api gateway
