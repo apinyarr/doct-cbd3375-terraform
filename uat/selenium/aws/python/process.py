@@ -9,6 +9,7 @@ from selenium.webdriver.support import expected_conditions as EC
 def lambda_handler(event, context):
     # Get text from json in the request body
     release = event["queryStringParameters"]["release"]
+    url = event["queryStringParameters"]["url"]
     print(release)
 
     options = Options()
@@ -21,7 +22,7 @@ def lambda_handler(event, context):
 
     driver = webdriver.Chrome('/opt/chromedriver',chrome_options=options)
     
-    driver.get('https://www.lambtoncollege.ca/programs/international/doct/')
+    driver.get(url)
     title = driver.title
     wait = WebDriverWait(driver, 10)
     wait.until(EC.presence_of_element_located((By.TAG_NAME, 'body')))
